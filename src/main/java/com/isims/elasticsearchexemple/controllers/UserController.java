@@ -21,7 +21,7 @@ public class UserController {
 
     @PostMapping
     public User saveUser(@RequestBody User user) {
-        return userRepository.save(user);
+        return userService.addUser(user);
     }
 
     @GetMapping
@@ -50,5 +50,10 @@ public class UserController {
             @PathVariable String id,
             @RequestParam Role role) {
         return ResponseEntity.ok(userService.affecterRole(id, role));
+    }
+
+    @GetMapping("search-role")
+    public List<User> searchRole(@RequestParam Role role) {
+        return userRepository.findUserByRole(role);
     }
 }
