@@ -5,9 +5,12 @@ import com.isims.elasticsearchexemple.entities.User;
 import com.isims.elasticsearchexemple.repositories.UserRepository;
 import com.isims.elasticsearchexemple.services.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -42,6 +45,13 @@ public class UserController {
         } else {
             return "Utilisateur avec l'ID " + id + " introuvable.";
         }
+    }
+
+    @PatchMapping("/{id}")
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody Map<String, Object> updates) {
+        User user = userService.updateUser(id, updates);
+        return ResponseEntity.ok(user);
     }
 
 
